@@ -1,9 +1,8 @@
 /**
- * FLASH TRANSIT - App Core Logic
+ * FLASH TRANSIT - Logique Principale
  */
 
-// Configuration des coordonnées officielles
-const COMPANY_WHATSAPP_NUMBER = "221770927265"; // Format international strict sans + ni espaces
+const COMPANY_WHATSAPP_NUMBER = "221770927265";
 const COMPANY_EMAIL = "zhardinebenhoussame@gmail.com";
 
 const AppState = {
@@ -17,17 +16,12 @@ const CONFIG = {
   KM: { name: "Comores", flag: "🇰🇲", currency: "KMF", symbol: "KMF" }
 };
 
-/**
- * Ouvre directement la discussion WhatsApp vers le numéro configuré
- * @param {string} customText 
- */
 function contactWhatsApp(customText) {
-  const message = customText || "Bonjour Flash Transit, je souhaite avoir plus d'informations.";
+  const message = customText || "Bonjour Flash Transit, je souhaite avoir des informations.";
   const url = `https://wa.me/${COMPANY_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
   window.open(url, '_blank', 'noopener,noreferrer');
 }
 
-// Changer de pays/devise DYNAMIQUEMENT sans recharger la page
 function switchDestinationCountry(countryCode) {
   if (!CONFIG[countryCode]) return;
   
@@ -50,11 +44,11 @@ function updateCurrencyUI() {
 
   if (btnSN && btnKM) {
     if (AppState.country === 'SN') {
-      btnSN.className = "px-2.5 py-1 rounded-lg bg-orange-500 text-white font-bold transition shadow-sm";
-      btnKM.className = "px-2.5 py-1 rounded-lg text-zinc-600 hover:text-orange-600 font-medium transition";
+      btnSN.className = "px-2 py-0.5 rounded bg-brand-pink text-white font-bold transition shadow-sm";
+      btnKM.className = "px-2 py-0.5 rounded text-slate-400 hover:text-white transition font-medium";
     } else {
-      btnKM.className = "px-2.5 py-1 rounded-lg bg-orange-500 text-white font-bold transition shadow-sm";
-      btnSN.className = "px-2.5 py-1 rounded-lg text-zinc-600 hover:text-orange-600 font-medium transition";
+      btnKM.className = "px-2 py-0.5 rounded bg-brand-pink text-white font-bold transition shadow-sm";
+      btnSN.className = "px-2 py-0.5 rounded text-slate-400 hover:text-white transition font-medium";
     }
   }
 }

@@ -1,21 +1,31 @@
 /* ============================================================
-   FLASH TRANSIT - Style Exact MallComo
+   FLASH TRANSIT - Style Sombre & Rose Luxe (MallComo)
    ============================================================ */
 
 :root {
-  --color-orange-banner: #ea580c;
-  --color-dark-nav: #18181b;
-  --color-primary-orange: #f97316;
-  --color-bg-light: #f4f4f5;
+  --color-pink: #e91e63;
+  --color-pink-hover: #d81b60;
+  --color-dark-bg: #0d0f12;
+  --color-dark-card: #161920;
+  --color-dark-border: #232732;
 }
 
 body {
-  background-color: var(--color-bg-light);
-  color: #18181b;
+  background-color: var(--color-dark-bg);
+  color: #e2e8f0;
   font-family: system-ui, -apple-system, sans-serif;
 }
 
-/* Animation Bandeau Défilant */
+.bg-brand-dark { background-color: var(--color-dark-bg); }
+.bg-brand-card { background-color: var(--color-dark-card); }
+.border-brand { border-color: var(--color-dark-border); }
+
+.bg-brand-pink { background-color: var(--color-pink); }
+.bg-brand-pink:hover { background-color: var(--color-pink-hover); }
+.text-brand-pink { color: var(--color-pink); }
+.border-brand-pink { border-color: var(--color-pink); }
+
+/* Animation du Bandeau Défilant */
 @keyframes marquee-scroll {
   0% { transform: translateX(100%); }
   100% { transform: translateX(-100%); }
@@ -24,18 +34,18 @@ body {
 .animate-marquee {
   display: inline-block;
   white-space: nowrap;
-  animation: marquee-scroll 20s linear infinite;
+  animation: marquee-scroll 18s linear infinite;
 }
 
 .marquee-container:hover .animate-marquee {
   animation-play-state: paused;
 }
 
-/* Ombre des cartes produits */
-.mall-card {
-  transition: all 0.2s ease-in-out;
+.pink-glow-hover {
+  transition: all 0.3s ease;
 }
-.mall-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+
+.pink-glow-hover:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-pink);
 }
