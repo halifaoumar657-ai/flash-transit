@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suivi de Colis - Flash Transit</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              dark: '#0d0f12',
+              card: '#161920',
+              border: '#232732',
+              pink: '#e91e63',
+              'pink-hover': '#d81b60'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-brand-dark text-slate-100 font-sans antialiased">
+
+  <!-- TOP BAR -->
+  <div class="bg-black text-white text-xs py-2.5 px-4 border-b border-brand">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <div class="flex items-center space-x-2 font-medium">
+        <span class="bg-brand-pink text-white px-2 py-0.5 rounded text-[10px] font-extrabold uppercase">Suivi Direct</span>
+        <span class="text-slate-300">🇨🇳 CHINE <i class="fa-solid fa-arrow-right text-brand-pink mx-1"></i> 🇰🇲 COMORES <i class="fa-solid fa-arrow-right text-brand-pink mx-1"></i> 🇸🇳 SÉNÉGAL</span>
+      </div>
+      <a href="index.html" class="hover:text-brand-pink transition">Retour à l'accueil</a>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="bg-brand-card border-b border-brand sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+      <a href="index.html" class="flex items-center space-x-2">
+        <div class="bg-brand-pink text-white px-3 py-1.5 rounded-xl font-black text-xl tracking-wider pink-glow">
+          FLASH TRANSIT
+        </div>
+      </a>
+      <nav class="hidden md:flex space-x-8 font-semibold text-sm">
+        <a href="index.html" class="hover:text-brand-pink transition">Accueil</a>
+        <a href="shop.html" class="hover:text-brand-pink transition">Catalogue & Planning</a>
+        <a href="tracking.html" class="text-brand-pink font-bold border-b-2 border-brand-pink pb-1">Suivi de Transit</a>
+      </nav>
+      <a href="cart.html" class="relative p-2.5 bg-brand-dark rounded-xl border border-brand text-slate-200 hover:border-brand-pink transition">
+        <i class="fa-solid fa-bag-shopping text-lg"></i>
+        <span id="cart-count" class="absolute -top-1.5 -right-1.5 bg-brand-pink text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center">0</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- BANNIÈRE DE RECHERCHE TRACKING -->
+  <section class="bg-black text-white py-12 px-4 border-b border-brand">
+    <div class="max-w-3xl mx-auto text-center">
+      <h1 class="text-3xl font-black mb-3">Suivez votre colis en temps réel</h1>
+      <p class="text-slate-400 text-sm mb-6">Entrez votre numéro de suivi (ex: <code class="text-brand-pink font-mono font-bold">FT-2026-8890</code>)</p>
+
+      <div class="flex gap-2 bg-brand-card p-2 rounded-2xl border border-brand pink-glow-hover">
+        <input type="text" id="tracking-code" placeholder="Numéro de suivi (ex: FT-2026-8890)" class="w-full bg-transparent px-4 py-2 text-white placeholder-slate-500 focus:outline-none text-sm font-mono">
+        <button onclick="trackPackage()" class="bg-brand-pink hover:bg-brand-pink-hover text-white font-bold px-6 py-2.5 rounded-xl transition flex items-center gap-2 text-sm pink-glow">
+          <i class="fa-solid fa-magnifying-glass"></i> Rechercher
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- RÉSULTAT DU TRACKING -->
+  <main class="max-w-3xl mx-auto px-4 py-10">
+    <div class="bg-brand-card rounded-2xl p-6 border border-brand shadow-xl">
+      <div class="flex flex-wrap justify-between items-center border-b border-brand pb-4 mb-6 gap-2">
+        <div>
+          <span class="text-xs text-slate-400 font-bold uppercase block">Numéro de Suivi</span>
+          <span class="font-mono font-bold text-brand-pink text-lg">FT-2026-8890</span>
+        </div>
+        <div>
+          <span class="text-xs text-slate-400 font-bold uppercase block">Type d'Envoi</span>
+          <span class="bg-brand-pink/20 text-brand-pink border border-brand-pink/40 text-xs font-bold px-3 py-1 rounded-full"><i class="fa-solid fa-plane"></i> Express Aérien</span>
+        </div>
+      </div>
+
+      <!-- TIMELINE DE TRANSIT -->
+      <div class="relative border-l-2 border-brand-pink ml-4 space-y-8 py-2">
+        
+        <!-- Étape 1 -->
+        <div class="relative pl-6">
+          <div class="absolute -left-[9px] top-1 bg-brand-pink w-4 h-4 rounded-full border-2 border-brand-card"></div>
+          <h4 class="font-bold text-white text-sm">Réceptionné à l'entrepôt de Guangzhou (Chine)</h4>
+          <p class="text-xs text-slate-400 mt-0.5">Colis pesé, contrôlé et mis en carton d'exportation.</p>
+          <span class="text-[10px] text-slate-500 font-mono mt-1 block">08 Oct 2026 - 14:30</span>
+        </div>
+
+        <!-- Étape 2 -->
+        <div class="relative pl-6">
+          <div class="absolute -left-[9px] top-1 bg-brand-pink w-4 h-4 rounded-full border-2 border-brand-card"></div>
+          <h4 class="font-bold text-white text-sm">En Transit Aérien International</h4>
+          <p class="text-xs text-slate-400 mt-0.5">Vol cargo parti de Guangzhou vers la plateforme de correspondance.</p>
+          <span class="text-[10px] text-slate-500 font-mono mt-1 block">10 Oct 2026 - 09:15</span>
+        </div>
+
+        <!-- Étape 3 (Actuelle) -->
+        <div class="relative pl-6">
+          <div class="absolute -left-[11px] top-1 bg-emerald-500 w-5 h-5 rounded-full border-4 border-emerald-950 animate-pulse"></div>
+          <h4 class="font-bold text-emerald-400 text-sm">Arrivé à destination & En Dédouanement</h4>
+          <p class="text-xs text-slate-300 mt-0.5">Marchandise arrivée à destination. Formalités douanières en cours.</p>
+          <span class="text-[10px] text-emerald-400 font-mono font-bold mt-1 block">Aujourd'hui - En cours</span>
+        </div>
+
+        <!-- Étape 4 -->
+        <div class="relative pl-6 opacity-30">
+          <div class="absolute -left-[9px] top-1 bg-slate-600 w-4 h-4 rounded-full border-2 border-brand-card"></div>
+          <h4 class="font-bold text-slate-300 text-sm">Disponible pour retrait / Livraison</h4>
+          <p class="text-xs text-slate-500 mt-0.5">Colis prêt à l'agence ou en cours de livraison chez le client.</p>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script src="assets/js/app.js"></script>
+  <script>
+    function trackPackage() {
+      const code = document.getElementById('tracking-code').value.trim();
+      if (!code) {
+        alert("Veuillez saisir un numéro de suivi valide.");
+        return;
+      }
+      alert(`Recherche du colis "${code}" en cours...`);
+    }
+  </script>
+</body>
+</html>

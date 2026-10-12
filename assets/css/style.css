@@ -1,0 +1,41 @@
+/* ============================================================
+   FLASH TRANSIT - Style Exact MallComo
+   ============================================================ */
+
+:root {
+  --color-orange-banner: #ea580c;
+  --color-dark-nav: #18181b;
+  --color-primary-orange: #f97316;
+  --color-bg-light: #f4f4f5;
+}
+
+body {
+  background-color: var(--color-bg-light);
+  color: #18181b;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Animation Bandeau Défilant */
+@keyframes marquee-scroll {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+.animate-marquee {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee-scroll 20s linear infinite;
+}
+
+.marquee-container:hover .animate-marquee {
+  animation-play-state: paused;
+}
+
+/* Ombre des cartes produits */
+.mall-card {
+  transition: all 0.2s ease-in-out;
+}
+.mall-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+}

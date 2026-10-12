@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Votre Panier - Flash Transit</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              dark: '#0d0f12',
+              card: '#161920',
+              border: '#232732',
+              pink: '#e91e63',
+              'pink-hover': '#d81b60'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-brand-dark text-slate-100 font-sans antialiased">
+
+  <!-- HEADER -->
+  <header class="bg-brand-card border-b border-brand sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+      <a href="index.html" class="flex items-center space-x-2">
+        <div class="bg-brand-pink text-white px-3 py-1.5 rounded-xl font-black text-xl tracking-wider pink-glow">
+          FLASH TRANSIT
+        </div>
+      </a>
+      <nav class="hidden md:flex space-x-8 font-semibold text-sm">
+        <a href="index.html" class="hover:text-brand-pink transition">Accueil</a>
+        <a href="shop.html" class="hover:text-brand-pink transition">Catalogue & Planning</a>
+        <a href="tracking.html" class="hover:text-brand-pink transition">Suivi de Transit</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- CONTENU DU PANIER -->
+  <main class="max-w-7xl mx-auto px-4 py-10">
+    <h1 class="text-3xl font-black text-white mb-8">Votre Panier d'Achat</h1>
+
+    <div class="grid lg:grid-cols-3 gap-8">
+      
+      <!-- Liste des Articles -->
+      <div class="lg:col-span-2 space-y-4" id="cart-items-container">
+        <!-- Généré dynamiquement par JS -->
+      </div>
+
+      <!-- Récapitulatif -->
+      <div class="bg-brand-card p-6 rounded-2xl border border-brand h-fit space-y-6 shadow-xl">
+        <h3 class="font-bold text-white text-lg border-b border-brand pb-3">Récapitulatif</h3>
+        
+        <div class="space-y-3 text-sm">
+          <div class="flex justify-between text-slate-300">
+            <span>Sous-total articles :</span>
+            <span id="subtotal-price" class="font-bold text-white">0 FCFA</span>
+          </div>
+          <div class="flex justify-between text-slate-300">
+            <span>Transit & Importation :</span>
+            <span class="text-xs bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold px-2 py-0.5 rounded">Au Checkout</span>
+          </div>
+          <div class="border-t border-brand pt-3 flex justify-between items-center">
+            <span class="font-black text-base text-white">Total estimé :</span>
+            <span id="total-price" class="font-black text-xl text-brand-pink">0 FCFA</span>
+          </div>
+        </div>
+
+        <a href="checkout.html" class="w-full bg-brand-pink hover:bg-brand-pink-hover text-white font-bold py-3.5 rounded-xl transition flex items-center justify-center gap-2 text-sm shadow-md block text-center pink-glow">
+          Passer la commande <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="assets/js/products.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    function renderCartPage() {
+      const container = document.getElementById('cart-items-container');
+      if (!container) return;
+
+      if (AppState.cart.length === 0) {
+        container.innerHTML = `
+          <div class="bg-brand-card rounded-2xl p-12 text-center border border-brand">
+            <i class="fa-solid fa-bag-shopping text-5xl text-slate-600 mb-4"></i>
+            <h3 class="font-bold text-white text-lg">Votre panier est vide</h3>
+            <p class="text-slate-400 text-sm mt-1 mb-6">Découvrez nos produits du planning hebdomadaire.</p>
+            <a href="shop.html" class="bg-brand-pink hover:bg-brand-pink-hover text-white font-bold px-6 py-2.5 rounded-xl text-sm transition inline-block pink-glow">
+              Voir le catalogue
+            </a>
+          </div>
+        `;
+        document.getElementById('subtotal-price').textContent = formatPrice(0, 0);
+        document.getElementById('total-price').textContent = formatPrice(0, 0);
+        return;
+      }
+
+      let totalXOF = 0;
+      let totalKMF = 0;
+
+      container.innerHTML = AppState.cart.map((item, index) => {
+        totalXOF += item.priceXOF * item.quantity;
+        totalKMF += item.priceKMF * item.quantity;
+
+        return `
+          <div class="bg-brand-card p-4 rounded-2xl border border-brand flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-4 w-full sm:w-auto">
+              <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-cover rounded-xl border border-brand">
+              <div>
+                <span class="text-[10px] font-bold text-brand-pink uppercase block">${item.dayLabel || 'Article Import'}</span>
+                <h4 class="font-bold text-white text-sm line-clamp-1">${item.name}</h4>
+                <span class="text-xs text-slate-400 block mt-1">${formatPrice(item.priceXOF, item.priceKMF)} / unité</span>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between w-full sm:w-auto gap-6 border-t sm:border-t-0 border-brand pt-3 sm:pt-0">
+              <div class="flex items-center space-x-2 bg-brand-dark rounded-xl p-1 border border-brand">
+                <button onclick="changeQty(${index}, -1)" class="w-7 h-7 bg-brand-card rounded-lg font-bold text-white hover:text-brand-pink text-xs">-</button>
+                <span class="px-2 font-bold text-xs text-white">${item.quantity}</span>
+                <button onclick="changeQty(${index}, 1)" class="w-7 h-7 bg-brand-card rounded-lg font-bold text-white hover:text-brand-pink text-xs">+</button>
+              </div>
+
+              <span class="font-black text-brand-pink text-sm">
+                ${formatPrice(item.priceXOF * item.quantity, item.priceKMF * item.quantity)}
+              </span>
+
+              <button onclick="removeItem(${index})" class="text-rose-500 hover:text-rose-400 p-2 text-sm">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('subtotal-price').textContent = formatPrice(totalXOF, totalKMF);
+      document.getElementById('total-price').textContent = formatPrice(totalXOF, totalKMF);
+    }
+
+    function changeQty(index, delta) {
+      AppState.cart[index].quantity += delta;
+      if (AppState.cart[index].quantity <= 0) {
+        AppState.cart.splice(index, 1);
+      }
+      localStorage.setItem('ft_cart', JSON.stringify(AppState.cart));
+      updateCartBadge();
+      renderCartPage();
+    }
+
+    function removeItem(index) {
+      AppState.cart.splice(index, 1);
+      localStorage.setItem('ft_cart', JSON.stringify(AppState.cart));
+      updateCartBadge();
+      renderCartPage();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCartPage();
+    });
+  </script>
+</body>
+</html>

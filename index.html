@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flash Transit - Import Export Chine & Sénégal & Comores</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-zinc-100 text-zinc-900 font-sans antialiased flex flex-col min-h-screen">
+
+  <!-- 1. BANDEAU DÉFILANT ORANGE HAUT DE PAGE -->
+  <div class="bg-gradient-to-r from-orange-600 via-orange-500 to-amber-600 text-white text-xs py-2 overflow-hidden font-bold shadow-inner">
+    <div class="marquee-container relative overflow-hidden">
+      <div class="animate-marquee flex items-center space-x-8">
+        <span>⚡ FLASH TRANSIT — IMPORT-EXPORT CHINE & SÉNÉGAL &     COMORES !</span>
+        <span>🎉 LUNDI À VENDREDI : NOUVEAUX ARRIVAGES DU PLANNING HEBDOMADAIRE !</span>
+        <span>✈️ TRANSIT EXPRESS AÉRIEN & MARITIME AU MEILLEUR PRIX !</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. HEADER PRINCIPAL -->
+  <header class="bg-white border-b border-zinc-200 py-3 px-4 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+      
+      <!-- Logo -->
+      <a href="index.html" class="flex items-center space-x-2">
+        <div class="bg-orange-500 text-white font-black px-3 py-1.5 rounded-lg text-xl tracking-wider shadow">
+          FLASH<span class="text-zinc-900">TRANSIT</span>
+        </div>
+      </a>
+
+      <!-- Barre de recherche -->
+      <div class="flex-1 max-w-2xl mx-4">
+        <div class="relative">
+          <input type="text" id="search-input" onkeyup="applyFilters()" placeholder="Rechercher un produit..." class="w-full bg-white border border-zinc-300 rounded-full py-2.5 pl-10 pr-4 text-sm focus:outline-none focus:border-orange-500 shadow-sm">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-zinc-400 text-sm"></i>
+        </div>
+      </div>
+
+      <!-- Actions Droite -->
+      <div class="flex items-center space-x-3 text-sm">
+        
+        <!-- Switcher SN / KM dynamique -->
+        <div class="hidden lg:flex items-center bg-zinc-100 p-1 rounded-xl border border-zinc-200 text-xs shadow-inner">
+          <button id="btn-currency-sn" onclick="switchDestinationCountry('SN')" class="px-2.5 py-1 rounded-lg bg-orange-500 text-white font-bold transition shadow-sm">
+            🇸🇳 SN (XOF)
+          </button>
+          <button id="btn-currency-km" onclick="switchDestinationCountry('KM')" class="px-2.5 py-1 rounded-lg text-zinc-600 hover:text-orange-600 font-medium transition">
+            🇰🇲 KM (KMF)
+          </button>
+        </div>
+
+        <a href="tracking.html" class="bg-zinc-900 hover:bg-zinc-800 text-white px-4 py-2 rounded-xl font-bold flex items-center gap-2 text-xs transition">
+          <i class="fa-solid fa-truck-fast text-orange-400"></i> Suivi Colis
+        </a>
+
+        <a href="cart.html" class="bg-orange-500 hover:bg-orange-600 text-white p-2.5 rounded-xl transition relative">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span id="cart-count" class="absolute -top-1 -right-1 bg-zinc-900 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- 3. BARRE DE NAVIGATION CATÉGORIES -->
+  <nav class="bg-zinc-900 text-white text-xs font-semibold overflow-x-auto">
+    <div class="max-w-7xl mx-auto flex items-center space-x-6 px-4 py-3 whitespace-nowrap">
+      <a href="#" onclick="filterByDay('all')" class="hover:text-orange-400 transition flex items-center gap-1"><i class="fa-solid fa-border-all"></i> Tous les produits</a>
+      <a href="#" onclick="filterByDay('lundi')" class="hover:text-orange-400 transition">Électronique & High-Tech (Lundi) <i class="fa-solid fa-chevron-down text-[10px]"></i></a>
+      <a href="#" onclick="filterByDay('mardi')" class="hover:text-orange-400 transition">Bijoux & Accessoires (Mardi) <i class="fa-solid fa-chevron-down text-[10px]"></i></a>
+      <a href="#" onclick="filterByDay('mercredi')" class="hover:text-orange-400 transition">Mode Homme (Mercredi) <i class="fa-solid fa-chevron-down text-[10px]"></i></a>
+      <a href="#" onclick="filterByDay('jeudi')" class="hover:text-orange-400 transition">Chaussures & Sacs (Jeudi) <i class="fa-solid fa-chevron-down text-[10px]"></i></a>
+      <a href="#" onclick="filterByDay('vendredi')" class="hover:text-orange-400 transition">Cosmétiques & Parfums (Vendredi) <i class="fa-solid fa-chevron-down text-[10px]"></i></a>
+      <a href="#" class="text-orange-400 font-bold">Promotions</a>
+    </div>
+  </nav>
+
+  <!-- 4. CONTENU PRINCIPAL -->
+  <main class="max-w-7xl mx-auto px-4 py-6 flex-grow">
+    <div class="grid lg:grid-cols-4 gap-6">
+      
+      <!-- COLONNE GAUCHE : FILTRES -->
+      <aside class="space-y-4">
+        <div class="bg-white p-5 rounded-2xl border border-zinc-200 shadow-sm space-y-5 text-xs font-medium">
+          
+          <div>
+            <label class="block font-bold text-zinc-900 uppercase mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-tag text-orange-500"></i> CATÉGORIE
+            </label>
+            <select id="category-select" onchange="applyFilters()" class="w-full bg-zinc-50 border border-zinc-300 rounded-xl p-2.5 text-xs text-zinc-800 focus:outline-none focus:border-orange-500">
+              <option value="all">Toutes les catégories</option>
+              <option value="lundi">High-Tech & Électronique</option>
+              <option value="mardi">Bijoux & Accessoires</option>
+              <option value="mercredi">Mode Homme</option>
+              <option value="jeudi">Chaussures & Sacs</option>
+              <option value="vendredi">Cosmétiques & Parfums</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-bold text-zinc-900 uppercase mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-euro-sign text-orange-500"></i> PRIX
+            </label>
+            <div class="flex items-center gap-2">
+              <input type="number" id="price-min" onkeyup="applyFilters()" placeholder="Min" class="w-full bg-zinc-50 border border-zinc-300 rounded-xl p-2 text-xs text-center focus:outline-none">
+              <span>-</span>
+              <input type="number" id="price-max" onkeyup="applyFilters()" placeholder="Max" class="w-full bg-zinc-50 border border-zinc-300 rounded-xl p-2 text-xs text-center focus:outline-none">
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-bold text-zinc-900 uppercase mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-location-dot text-orange-500"></i> RÉGION
+            </label>
+            <select id="region-select" onchange="applyFilters()" class="w-full bg-zinc-50 border border-zinc-300 rounded-xl p-2.5 text-xs text-zinc-800 focus:outline-none">
+              <option value="all">Toutes les régions</option>
+              <option value="Dakar">Sénégal (Dakar / Régions)</option>
+              <option value="Moroni">Comores (Moroni / Anjouan)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-bold text-zinc-900 uppercase mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-box text-orange-500"></i> ÉTAT
+            </label>
+            <select class="w-full bg-zinc-50 border border-zinc-300 rounded-xl p-2.5 text-xs text-zinc-800 focus:outline-none">
+              <option value="neuf">Neuf (Import Chine)</option>
+            </select>
+          </div>
+
+          <button onclick="applyFilters()" class="w-full bg-zinc-900 hover:bg-zinc-800 text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2 text-xs shadow">
+            <i class="fa-solid fa-check"></i> Appliquer les filtres
+          </button>
+
+        </div>
+      </aside>
+
+      <!-- COLONNE DROITE : GRILLE DE PRODUITS -->
+      <section class="lg:col-span-3 space-y-4">
+        
+        <div class="bg-white p-4 rounded-2xl border border-zinc-200 flex justify-between items-center shadow-sm">
+          <span id="results-count" class="font-bold text-zinc-900 text-lg">0 produit</span>
+
+          <div class="flex items-center space-x-2">
+            <label class="text-xs text-zinc-500 hidden sm:inline-block">Trier par :</label>
+            <select id="sort-select" onchange="applyFilters()" class="bg-zinc-50 border border-zinc-300 text-zinc-800 text-xs rounded-xl p-2 focus:outline-none">
+              <option value="default">Pertinence</option>
+              <option value="price-asc">Prix croissant</option>
+              <option value="price-desc">Prix décroissant</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="products-container" class="grid sm:grid-cols-2 xl:grid-cols-4 gap-4">
+          <!-- Injectés par JS -->
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- 5. FOOTER AVEC VOS COORDONNÉES EXACTES -->
+  <footer class="bg-zinc-900 text-zinc-300 text-xs pt-12 pb-6 border-t border-zinc-800 mt-12">
+    <div class="max-w-7xl mx-auto px-4 space-y-10">
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8">
+        
+        <div class="lg:col-span-2 space-y-4">
+          <a href="index.html" class="inline-block">
+            <div class="bg-orange-500 text-white font-black px-3.5 py-2 rounded-xl text-xl tracking-wider shadow inline-block">
+              FLASH<span class="text-zinc-900">TRANSIT</span>
+            </div>
+          </a>
+          <h3 class="text-white font-black text-lg">Flash Transit</h3>
+          <p class="text-zinc-400 text-xs">L'e-commerce d'importation haut de gamme Chine $\rightarrow$ Sénégal & Comores.</p>
+
+          <div class="flex items-center space-x-3 pt-2">
+            <button onclick="contactWhatsApp('Bonjour Flash Transit')" class="w-9 h-9 rounded-full bg-zinc-800 hover:bg-emerald-500 text-white flex items-center justify-center transition border border-zinc-700">
+              <i class="fa-brands fa-whatsapp text-sm"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <h4 class="text-white font-bold text-sm border-b-2 border-orange-500 w-fit pb-1">Flash Transit</h4>
+          <ul class="space-y-2 text-zinc-400">
+            <li><a href="#" class="hover:text-orange-400 transition">À propos</a></li>
+            <li><a href="#" class="hover:text-orange-400 transition">Contact</a></li>
+            <li><a href="#" class="hover:text-orange-400 transition">Aide & FAQ</a></li>
+          </ul>
+        </div>
+
+        <div class="space-y-3">
+          <h4 class="text-white font-bold text-sm border-b-2 border-orange-500 w-fit pb-1">Acheter</h4>
+          <ul class="space-y-2 text-zinc-400">
+            <li><a href="shop.html" class="hover:text-orange-400 transition">Catégories</a></li>
+            <li><a href="#" class="hover:text-orange-400 transition">Promotions</a></li>
+            <li><a href="#" class="hover:text-orange-400 transition">Livraison & Transit</a></li>
+          </ul>
+        </div>
+
+        <div class="space-y-3">
+          <h4 class="text-white font-bold text-sm border-b-2 border-orange-500 w-fit pb-1">Légal</h4>
+          <ul class="space-y-2 text-zinc-400">
+            <li><a href="#" class="hover:text-orange-400 transition">CGU</a></li>
+            <li><a href="#" class="hover:text-orange-400 transition">CGV</a></li>
+            <li><a href="#" class="hover:text-orange-400 transition">Confidentialité</a></li>
+          </ul>
+        </div>
+
+        <div class="space-y-3">
+          <h4 class="text-white font-bold text-sm border-b-2 border-orange-500 w-fit pb-1">Contact</h4>
+          <ul class="space-y-2 text-zinc-400">
+            <li class="flex items-center gap-2">
+              <i class="fa-solid fa-phone text-orange-500"></i>
+              <a href="tel:+221770927265" class="hover:text-orange-400">+221 77 092 72 65</a>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fa-solid fa-envelope text-orange-500"></i>
+              <a href="mailto:zhardinebenhoussame@gmail.com" class="hover:text-orange-400">zhardinebenhoussame@gmail.com</a>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-location-dot text-orange-500 mt-0.5"></i>
+              <span>Dakar, Sénégal & Moroni, Comores</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="border-t border-zinc-800 pt-6 flex flex-col sm:flex-row justify-between items-center text-zinc-500 text-[11px] gap-2">
+        <p>© 2026 Flash Transit. Tous droits réservés.</p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- BOUTON FLOTTANT WHATSAPP -->
+  <button onclick="contactWhatsApp('Bonjour Flash Transit, je souhaite passer une commande.')" class="fixed bottom-6 right-6 bg-emerald-500 hover:bg-emerald-600 text-white w-14 h-14 rounded-full flex items-center justify-center text-2xl shadow-2xl transition z-50 animate-bounce">
+    <i class="fa-brands fa-whatsapp"></i>
+  </button>
+
+  <!-- SCRIPTS -->
+  <script src="assets/js/products.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    let currentDayFilter = 'all';
+
+    function filterByDay(day) {
+      currentDayFilter = day;
+      applyFilters();
+    }
+
+    function applyFilters() {
+      const container = document.getElementById('products-container');
+      const searchQuery = document.getElementById('search-input').value.toLowerCase();
+      const catSelect = document.getElementById('category-select').value;
+      const sortSelect = document.getElementById('sort-select').value;
+
+      let list = [...PRODUCTS_DATA];
+
+      if (currentDayFilter !== 'all') {
+        list = list.filter(p => p.day === currentDayFilter);
+      } else if (catSelect !== 'all') {
+        list = list.filter(p => p.day === catSelect);
+      }
+
+      if (searchQuery.trim() !== '') {
+        list = list.filter(p => p.name.toLowerCase().includes(searchQuery));
+      }
+
+      if (sortSelect === 'price-asc') {
+        list.sort((a,b) => (AppState.country === 'KM' ? a.priceKMF - b.priceKMF : a.priceXOF - b.priceXOF));
+      } else if (sortSelect === 'price-desc') {
+        list.sort((a,b) => (AppState.country === 'KM' ? b.priceKMF - a.priceKMF : b.priceXOF - a.priceXOF));
+      }
+
+      document.getElementById('results-count').textContent = `${list.length} produit(s)`;
+
+      if (list.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full bg-white p-12 rounded-2xl text-center border border-zinc-200 text-zinc-500">
+            <i class="fa-solid fa-box-open text-4xl mb-3"></i>
+            <p class="font-bold text-sm">Aucun produit trouvé.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = list.map(p => {
+        const productNameEscaped = p.name.replace(/'/g, "\\'");
+        return `
+          <div class="bg-white rounded-2xl border border-zinc-200 overflow-hidden mall-card flex flex-col justify-between">
+            <div class="relative">
+              <img src="${p.image}" alt="${p.name}" class="w-full h-44 object-cover">
+              <button onclick="addToCart('${p.id}')" class="absolute top-2.5 right-2.5 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center text-zinc-600 hover:text-rose-500 shadow transition">
+                <i class="fa-regular fa-heart text-xs"></i>
+              </button>
+            </div>
+
+            <div class="p-3.5 flex-1 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center space-x-1 text-[11px] text-zinc-500 mb-1">
+                  <i class="fa-solid fa-store text-orange-500"></i>
+                  <span class="font-bold text-orange-600">Flash Transit</span>
+                  <span>• 📍 ${AppState.country === 'KM' ? 'Moroni' : 'Dakar'}</span>
+                </div>
+                <h4 class="font-bold text-zinc-900 text-xs line-clamp-1">${p.name}</h4>
+                <span class="font-extrabold text-orange-600 text-sm block mt-1">${formatPrice(p.priceXOF, p.priceKMF)}</span>
+              </div>
+
+              <div class="mt-3 pt-2.5 border-t border-zinc-100 flex items-center gap-1.5">
+                <button onclick="contactWhatsApp('Bonjour, je suis intéressé par l\\'article : ${productNameEscaped}')" class="flex-1 bg-zinc-900 hover:bg-zinc-800 text-white font-bold py-1.5 px-2 rounded-lg text-[11px] flex items-center justify-center gap-1 transition">
+                  <i class="fa-brands fa-whatsapp text-emerald-400"></i> WhatsApp
+                </button>
+                <button onclick="addToCart('${p.id}')" class="bg-zinc-100 hover:bg-zinc-200 text-zinc-800 font-bold py-1.5 px-2.5 rounded-lg text-[11px] flex items-center justify-center gap-1 transition">
+                  <i class="fa-regular fa-eye"></i> Voir
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      applyFilters();
+    });
+  </script>
+</body>
+</html>
